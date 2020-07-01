@@ -18,13 +18,13 @@ class ObsFactory
      * 华为云配置
      * @var array
      */
-    private $option;
+    private array $option;
 
     /**
      * 对象存储客户端
      * @var ObsClient
      */
-    private $client;
+    private ObsClient $client;
 
     /**
      * OssFactory constructor.

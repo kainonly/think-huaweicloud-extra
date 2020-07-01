@@ -8,7 +8,7 @@ use think\Service;
 
 class ObsService extends Service
 {
-    public function register()
+    public function register(): void
     {
         $this->app->bind('obs', function () {
             $config = $this->app->config
