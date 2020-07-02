@@ -2,7 +2,7 @@
   "name": "kain/think-huaweicloud-extra",
   "description": "ThinkPHP 华为云相关扩展",
   "require": {
-    "php": ">=7.4.*",
+    "php": ">=7.4.0",
     "topthink/framework": "^6.0.0",
     "non0/huaweicloud-obs-sdk": "^3.20"
   },
