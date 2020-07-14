@@ -59,7 +59,7 @@ class ObsFactory
      */
     public function getClient(): ObsClient
     {
-        return $this->client;
+        return $this->setClient();
     }
 
     /**
