@@ -29,7 +29,6 @@ class ObsFactory
     /**
      * OssFactory constructor.
      * @param array $option
-     * @param object $utils
      */
     public function __construct(array $option)
     {

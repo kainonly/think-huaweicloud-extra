@@ -4,13 +4,15 @@
   "require": {
     "php": ">=7.4.0",
     "topthink/framework": "^6.0.0",
-    "non0/huaweicloud-obs-sdk": "^3.20"
+    "guzzlehttp/guzzle": "^6.2 || ^7.0",
+    "monolog/monolog": "^1.25.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {
+      "Obs\\": "Obs/",
       "think\\huaweicloud\\extra\\": "src/"
     }
   },
