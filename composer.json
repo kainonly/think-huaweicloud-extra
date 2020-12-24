@@ -19,7 +19,7 @@
   "extra": {
     "think": {
       "services": [
-        "think\\huaweicloud\\extra\\service\\ObsService"
+        "think\\huaweicloud\\extra\\ObsService"
       ]
     }
   },

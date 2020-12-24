@@ -1,7 +1,7 @@
 <?php
 declare (strict_types=1);
 
-namespace think\huaweicloud\extra\common;
+namespace think\huaweicloud\extra;
 
 use Exception;
 use Obs\ObsClient;

@@ -1,9 +1,8 @@
 <?php
 declare (strict_types=1);
 
-namespace think\huaweicloud\extra\service;
+namespace think\huaweicloud\extra;
 
-use think\huaweicloud\extra\common\ObsFactory;
 use think\Service;
 
 class ObsService extends Service
