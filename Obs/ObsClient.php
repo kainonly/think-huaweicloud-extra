@@ -28,7 +28,7 @@ use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\Handler\CurlMultiHandler;
 use GuzzleHttp\Handler\Proxy;
 use GuzzleHttp\Promise\Promise;
-use Obs\Internal\Resource\Constants;
+use RuntimeException;
 
 
 define('DEBUG', Logger::DEBUG);
@@ -99,307 +99,303 @@ define('EMERGENCY', Logger::EMERGENCY);
  * @method Model listMultipartUploads(array $args = []);
  * @method Model optionsObject(array $args = []);
  * @method Model restoreObject(array $args = []);
- *  
- * @method Promise createBucketAsync(array $args = [], callable $callback);
+ *
+ * @method Promise createBucketAsync(array $args, callable $callback);
  * @method Promise listBucketsAsync(callable $callback);
- * @method Promise deleteBucketAsync(array $args = [], callable $callback);
- * @method Promise listObjectsAsync(array $args = [], callable $callback);
- * @method Promise listVersionsAsync(array $args = [], callable $callback);
- * @method Promise headBucketAsync(array $args = [], callable $callback);
- * @method Promise getBucketMetadataAsync(array $args = [], callable $callback);
- * @method Promise getBucketLocationAsync(array $args = [], callable $callback);
- * @method Promise getBucketStorageInfoAsync(array $args = [], callable $callback);
- * @method Promise setBucketQuotaAsync(array $args = [], callable $callback);
- * @method Promise getBucketQuotaAsync(array $args = [], callable $callback);
- * @method Promise setBucketStoragePolicyAsync(array $args = [], callable $callback);
- * @method Promise getBucketStoragePolicyAsync(array $args = [], callable $callback);
- * @method Promise setBucketAclAsync(array $args = [], callable $callback);
- * @method Promise getBucketAclAsync(array $args = [], callable $callback);
- * @method Promise setBucketLoggingAsync(array $args = [], callable $callback);
- * @method Promise getBucketLoggingAsync(array $args = [], callable $callback);
- * @method Promise setBucketPolicyAsync(array $args = [], callable $callback);
- * @method Promise getBucketPolicyAsync(array $args = [], callable $callback);
- * @method Promise deleteBucketPolicyAsync(array $args = [], callable $callback);
- * @method Promise setBucketLifecycleAsync(array $args = [], callable $callback);
- * @method Promise getBucketLifecycleAsync(array $args = [], callable $callback);
- * @method Promise deleteBucketLifecycleAsync(array $args = [], callable $callback);
- * @method Promise setBucketWebsiteAsync(array $args = [], callable $callback);
- * @method Promise getBucketWebsiteAsync(array $args = [], callable $callback);
- * @method Promise deleteBucketWebsiteAsync(array $args = [], callable $callback);
- * @method Promise setBucketVersioningAsync(array $args = [], callable $callback);
- * @method Promise getBucketVersioningAsync(array $args = [], callable $callback);
- * @method Promise setBucketCorsAsync(array $args = [], callable $callback);
- * @method Promise getBucketCorsAsync(array $args = [], callable $callback);
- * @method Promise deleteBucketCorsAsync(array $args = [], callable $callback);
- * @method Promise setBucketNotificationAsync(array $args = [], callable $callback);
- * @method Promise getBucketNotificationAsync(array $args = [], callable $callback);
- * @method Promise setBucketTaggingAsync(array $args = [], callable $callback);
- * @method Promise getBucketTaggingAsync(array $args = [], callable $callback);
- * @method Promise deleteBucketTaggingAsync(array $args = [], callable $callback);
- * @method Promise optionsBucketAsync(array $args = [], callable $callback);
- * 
- * @method Promise putObjectAsync(array $args = [], callable $callback);
- * @method Promise getObjectAsync(array $args = [], callable $callback);
- * @method Promise copyObjectAsync(array $args = [], callable $callback);
- * @method Promise deleteObjectAsync(array $args = [], callable $callback);
- * @method Promise deleteObjectsAsync(array $args = [], callable $callback);
- * @method Promise getObjectMetadataAsync(array $args = [], callable $callback);
- * @method Promise setObjectAclAsync(array $args = [], callable $callback);
- * @method Promise getObjectAclAsync(array $args = [], callable $callback);
- * @method Promise initiateMultipartUploadAsync(array $args = [], callable $callback);
- * @method Promise uploadPartAsync(array $args = [], callable $callback);
- * @method Promise copyPartAsync(array $args = [], callable $callback);
- * @method Promise listPartsAsync(array $args = [], callable $callback);
- * @method Promise completeMultipartUploadAsync(array $args = [], callable $callback);
- * @method Promise abortMultipartUploadAsync(array $args = [], callable $callback);
- * @method Promise listMultipartUploadsAsync(array $args = [], callable $callback);
- * @method Promise optionsObjectAsync(array $args = [], callable $callback);
- * @method Promise restoreObjectAsync(array $args = [], callable $callback);
- * 
+ * @method Promise deleteBucketAsync(array $args, callable $callback);
+ * @method Promise listObjectsAsync(array $args, callable $callback);
+ * @method Promise listVersionsAsync(array $args, callable $callback);
+ * @method Promise headBucketAsync(array $args, callable $callback);
+ * @method Promise getBucketMetadataAsync(array $args, callable $callback);
+ * @method Promise getBucketLocationAsync(array $args, callable $callback);
+ * @method Promise getBucketStorageInfoAsync(array $args, callable $callback);
+ * @method Promise setBucketQuotaAsync(array $args, callable $callback);
+ * @method Promise getBucketQuotaAsync(array $args, callable $callback);
+ * @method Promise setBucketStoragePolicyAsync(array $args, callable $callback);
+ * @method Promise getBucketStoragePolicyAsync(array $args, callable $callback);
+ * @method Promise setBucketAclAsync(array $args, callable $callback);
+ * @method Promise getBucketAclAsync(array $args, callable $callback);
+ * @method Promise setBucketLoggingAsync(array $args, callable $callback);
+ * @method Promise getBucketLoggingAsync(array $args, callable $callback);
+ * @method Promise setBucketPolicyAsync(array $args, callable $callback);
+ * @method Promise getBucketPolicyAsync(array $args, callable $callback);
+ * @method Promise deleteBucketPolicyAsync(array $args, callable $callback);
+ * @method Promise setBucketLifecycleAsync(array $args, callable $callback);
+ * @method Promise getBucketLifecycleAsync(array $args, callable $callback);
+ * @method Promise deleteBucketLifecycleAsync(array $args, callable $callback);
+ * @method Promise setBucketWebsiteAsync(array $args, callable $callback);
+ * @method Promise getBucketWebsiteAsync(array $args, callable $callback);
+ * @method Promise deleteBucketWebsiteAsync(array $args, callable $callback);
+ * @method Promise setBucketVersioningAsync(array $args, callable $callback);
+ * @method Promise getBucketVersioningAsync(array $args, callable $callback);
+ * @method Promise setBucketCorsAsync(array $args, callable $callback);
+ * @method Promise getBucketCorsAsync(array $args, callable $callback);
+ * @method Promise deleteBucketCorsAsync(array $args, callable $callback);
+ * @method Promise setBucketNotificationAsync(array $args, callable $callback);
+ * @method Promise getBucketNotificationAsync(array $args, callable $callback);
+ * @method Promise setBucketTaggingAsync(array $args, callable $callback);
+ * @method Promise getBucketTaggingAsync(array $args, callable $callback);
+ * @method Promise deleteBucketTaggingAsync(array $args, callable $callback);
+ * @method Promise optionsBucketAsync(array $args, callable $callback);
+ *
+ * @method Promise putObjectAsync(array $args, callable $callback);
+ * @method Promise getObjectAsync(array $args, callable $callback);
+ * @method Promise copyObjectAsync(array $args, callable $callback);
+ * @method Promise deleteObjectAsync(array $args, callable $callback);
+ * @method Promise deleteObjectsAsync(array $args, callable $callback);
+ * @method Promise getObjectMetadataAsync(array $args, callable $callback);
+ * @method Promise setObjectAclAsync(array $args, callable $callback);
+ * @method Promise getObjectAclAsync(array $args, callable $callback);
+ * @method Promise initiateMultipartUploadAsync(array $args, callable $callback);
+ * @method Promise uploadPartAsync(array $args, callable $callback);
+ * @method Promise copyPartAsync(array $args, callable $callback);
+ * @method Promise listPartsAsync(array $args, callable $callback);
+ * @method Promise completeMultipartUploadAsync(array $args, callable $callback);
+ * @method Promise abortMultipartUploadAsync(array $args, callable $callback);
+ * @method Promise listMultipartUploadsAsync(array $args, callable $callback);
+ * @method Promise optionsObjectAsync(array $args, callable $callback);
+ * @method Promise restoreObjectAsync(array $args, callable $callback);
+ *
  */
 class ObsClient
 {
-	
-	const SDK_VERSION = '3.20.5';
-	
-	const AclPrivate = 'private';
-	const AclPublicRead = 'public-read';
-	const AclPublicReadWrite = 'public-read-write';
-	const AclPublicReadDelivered = 'public-read-delivered';
-	const AclPublicReadWriteDelivered = 'public-read-write-delivered';
-	
-	const AclAuthenticatedRead = 'authenticated-read';
-	const AclBucketOwnerRead = 'bucket-owner-read';
-	const AclBucketOwnerFullControl = 'bucket-owner-full-control';
-	const AclLogDeliveryWrite = 'log-delivery-write';
-	
-	const StorageClassStandard = 'STANDARD';
-	const StorageClassWarm = 'WARM';
-	const StorageClassCold = 'COLD';
-	
-	const PermissionRead = 'READ';
-	const PermissionWrite = 'WRITE';
-	const PermissionReadAcp = 'READ_ACP';
-	const PermissionWriteAcp = 'WRITE_ACP';
-	const PermissionFullControl = 'FULL_CONTROL';
-	
-	const AllUsers = 'Everyone';
-	
-	const GroupAllUsers = 'AllUsers';
-	const GroupAuthenticatedUsers = 'AuthenticatedUsers';
-	const GroupLogDelivery = 'LogDelivery';
-	
-	const RestoreTierExpedited = 'Expedited';
-	const RestoreTierStandard = 'Standard';
-	const RestoreTierBulk = 'Bulk';
-	
-	const GranteeGroup = 'Group';
-	const GranteeUser = 'CanonicalUser';
-	
-	const CopyMetadata = 'COPY';
-	const ReplaceMetadata = 'REPLACE';
-	
-	const SignatureV2 = 'v2';
-	const SignatureV4 = 'v4';
-	const SigantureObs = 'obs';
-	
-	const ObjectCreatedAll = 'ObjectCreated:*';
-	const ObjectCreatedPut = 'ObjectCreated:Put';
-	const ObjectCreatedPost = 'ObjectCreated:Post';
-	const ObjectCreatedCopy = 'ObjectCreated:Copy';
-	const ObjectCreatedCompleteMultipartUpload = 'ObjectCreated:CompleteMultipartUpload';
-	const ObjectRemovedAll = 'ObjectRemoved:*';
-	const ObjectRemovedDelete = 'ObjectRemoved:Delete';
-	const ObjectRemovedDeleteMarkerCreated = 'ObjectRemoved:DeleteMarkerCreated';
-	
-	use Internal\SendRequestTrait;
-	use Internal\GetResponseTrait;
-	
-	private $factorys;
 
-	public function __construct(array $config = []){
-		$this ->factorys = [];
-		
-		$this -> ak = strval($config['key']);
-		$this -> sk = strval($config['secret']);
-		
-		if(isset($config['security_token'])){
-		    $this -> securityToken = strval($config['security_token']);
-		}
-		
-		if(isset($config['endpoint'])){
-			$this -> endpoint = trim(strval($config['endpoint']));
-		}
-		
-		if($this -> endpoint === ''){
-			throw new \RuntimeException('endpoint is not set');
-		}
-		
-		while($this -> endpoint[strlen($this -> endpoint)-1] === '/'){
-			$this -> endpoint = substr($this -> endpoint, 0, strlen($this -> endpoint)-1);
-		}
-		
-		if(strpos($this-> endpoint, 'http') !== 0){
-			$this -> endpoint = 'https://' . $this -> endpoint;
-		}
-		
-		if(isset($config['signature'])){
-		    $this -> signature = strval($config['signature']);
-		}
-		
-		if(isset($config['path_style'])){
-			$this -> pathStyle = $config['path_style'];
-		}
-		
-		if(isset($config['region'])){
-			$this -> region = strval($config['region']);
-		}
-		
-		if(isset($config['ssl_verify'])){
-			$this -> sslVerify = $config['ssl_verify'];
-		}else if(isset($config['ssl.certificate_authority'])){
-			$this -> sslVerify = $config['ssl.certificate_authority'];
-		}
-		
-		if(isset($config['max_retry_count'])){
-			$this -> maxRetryCount = intval($config['max_retry_count']);
-		}
-		
-		if(isset($config['timeout'])){
-			$this -> timeout = intval($config['timeout']);
-		}
-		
-		if(isset($config['socket_timeout'])){
-			$this -> socketTimeout = intval($config['socket_timeout']);
-		}
-		
-		if(isset($config['connect_timeout'])){
-			$this -> connectTimeout = intval($config['connect_timeout']);
-		}
-		
-		if(isset($config['chunk_size'])){
-			$this -> chunkSize = intval($config['chunk_size']);
-		}
-		
-		if(isset($config['exception_response_mode'])){
-			$this -> exceptionResponseMode = $config['exception_response_mode'];
-		}
+    public const SDK_VERSION = '3.20.5';
 
-		if (isset($config['is_cname'])) {
-		    $this -> isCname = $config['is_cname'];
+    public const AclPrivate = 'private';
+    public const AclPublicRead = 'public-read';
+    public const AclPublicReadWrite = 'public-read-write';
+    public const AclPublicReadDelivered = 'public-read-delivered';
+    public const AclPublicReadWriteDelivered = 'public-read-write-delivered';
+
+    public const AclAuthenticatedRead = 'authenticated-read';
+    public const AclBucketOwnerRead = 'bucket-owner-read';
+    public const AclBucketOwnerFullControl = 'bucket-owner-full-control';
+    public const AclLogDeliveryWrite = 'log-delivery-write';
+
+    public const StorageClassStandard = 'STANDARD';
+    public const StorageClassWarm = 'WARM';
+    public const StorageClassCold = 'COLD';
+
+    public const PermissionRead = 'READ';
+    public const PermissionWrite = 'WRITE';
+    public const PermissionReadAcp = 'READ_ACP';
+    public const PermissionWriteAcp = 'WRITE_ACP';
+    public const PermissionFullControl = 'FULL_CONTROL';
+
+    public const AllUsers = 'Everyone';
+
+    public const GroupAllUsers = 'AllUsers';
+    public const GroupAuthenticatedUsers = 'AuthenticatedUsers';
+    public const GroupLogDelivery = 'LogDelivery';
+
+    public const RestoreTierExpedited = 'Expedited';
+    public const RestoreTierStandard = 'Standard';
+    public const RestoreTierBulk = 'Bulk';
+
+    public const GranteeGroup = 'Group';
+    public const GranteeUser = 'CanonicalUser';
+
+    public const CopyMetadata = 'COPY';
+    public const ReplaceMetadata = 'REPLACE';
+
+    public const SignatureV2 = 'v2';
+    public const SignatureV4 = 'v4';
+    public const SigantureObs = 'obs';
+
+    public const ObjectCreatedAll = 'ObjectCreated:*';
+    public const ObjectCreatedPut = 'ObjectCreated:Put';
+    public const ObjectCreatedPost = 'ObjectCreated:Post';
+    public const ObjectCreatedCopy = 'ObjectCreated:Copy';
+    public const ObjectCreatedCompleteMultipartUpload = 'ObjectCreated:CompleteMultipartUpload';
+    public const ObjectRemovedAll = 'ObjectRemoved:*';
+    public const ObjectRemovedDelete = 'ObjectRemoved:Delete';
+    public const ObjectRemovedDeleteMarkerCreated = 'ObjectRemoved:DeleteMarkerCreated';
+
+    use Internal\SendRequestTrait;
+    use Internal\GetResponseTrait;
+
+    private $factorys;
+
+    public function __construct(array $config = [])
+    {
+        $this->factorys = [];
+
+        $this->ak = (string)$config['key'];
+        $this->sk = (string)$config['secret'];
+
+        if (isset($config['security_token'])) {
+            $this->securityToken = (string)$config['security_token'];
         }
-		
-		$host = parse_url($this -> endpoint)['host'];
-		if(filter_var($host, FILTER_VALIDATE_IP) !== false) {
-		    $this -> pathStyle = true;
-		}
-				
-		$handler = self::choose_handler($this);
-		
-		$this -> httpClient = new Client(
-				[
-						'timeout' => 0,
-						'read_timeout' => $this -> socketTimeout,
-						'connect_timeout' => $this -> connectTimeout,
-						'allow_redirects' => false,
-						'verify' => $this -> sslVerify,
-						'expect' => false,
-						'handler' => HandlerStack::create($handler),
-						'curl' => [
-								CURLOPT_BUFFERSIZE => $this -> chunkSize
-						]
-				]
-		);
-		
-	}
-	
-	public function __destruct(){
-		$this-> close();
-	}
-	
-	public function refresh($key, $secret, $security_token=false){
-	    $this -> ak = strval($key);
-	    $this -> sk = strval($secret);
-	    if($security_token){
-	        $this -> securityToken = strval($security_token);
-	    }
-	}
-	
-	/**
-	 * Get the default User-Agent string to use with Guzzle
-	 *
-	 * @return string
-	 */
-	private static function default_user_agent()
-	{
-		static $defaultAgent = '';
-		if (!$defaultAgent) {
-			$defaultAgent = 'obs-sdk-php/' . self::SDK_VERSION;
-		}
-		
-		return $defaultAgent;
-	}
-	
-	/**
-	 * Factory method to create a new Obs client using an array of configuration options.
-	 *
-	 * @param array $config Client configuration data
-	 *
-	 * @return ObsClient
-	 */
-	public static function factory(array $config = [])
-	{
-		return new ObsClient($config);
-	}
-	
-	public function close(){
-		if($this->factorys){
-			foreach ($this->factorys as $factory){
-				$factory->close();
-			}
-		}
-	}
-	
-	public function initLog(array $logConfig= [])
-	{
-		ObsLog::initLog($logConfig);
-		
-		$msg = [];
-		$msg[] = '[OBS SDK Version=' . self::SDK_VERSION;
-		$msg[] = 'Endpoint=' . $this->endpoint;
-		$msg[] = 'Access Mode=' . ($this->pathStyle ? 'Path' : 'Virtual Hosting').']';
-		
-		ObsLog::commonLog(WARNING, implode("];[", $msg));
-	}
-	
-	private static function choose_handler($obsclient)
-	{
-		$handler = null;
-		if (function_exists('curl_multi_exec') && function_exists('curl_exec')) {
-			$f1 = new SdkCurlFactory(50);
-			$f2 = new SdkCurlFactory(3);
-			$obsclient->factorys[] = $f1;
-			$obsclient->factorys[] = $f2;
-			$handler = Proxy::wrapSync(new CurlMultiHandler(['handle_factory' => $f1]), new CurlHandler(['handle_factory' => $f2]));
-		} elseif (function_exists('curl_exec')) {
-			$f = new SdkCurlFactory(3);
-			$obsclient->factorys[] = $f;
-			$handler = new CurlHandler(['handle_factory' => $f]);
-		} elseif (function_exists('curl_multi_exec')) {
-			$f = new SdkCurlFactory(50);
-			$obsclient->factorys[] = $f;
-			$handler = new CurlMultiHandler(['handle_factory' => $f]);
-		}
-		
-		if (ini_get('allow_url_fopen')) {
-			$handler = $handler
-			? Proxy::wrapStreaming($handler, new SdkStreamHandler())
-			: new SdkStreamHandler();
-		} elseif (!$handler) {
-			throw new \RuntimeException('GuzzleHttp requires cURL, the '
-					. 'allow_url_fopen ini setting, or a custom HTTP handler.');
-		}
-		
-		return $handler;
-	}
+
+        if (isset($config['endpoint'])) {
+            $this->endpoint = trim((string)$config['endpoint']);
+        }
+
+        if ($this->endpoint === '') {
+            throw new \RuntimeException('endpoint is not set');
+        }
+
+        while ($this->endpoint[strlen($this->endpoint) - 1] === '/') {
+            $this->endpoint = substr($this->endpoint, 0, -1);
+        }
+
+        if (strpos($this->endpoint, 'http') !== 0) {
+            $this->endpoint = 'https://' . $this->endpoint;
+        }
+
+        if (isset($config['signature'])) {
+            $this->signature = (string)$config['signature'];
+        }
+
+        if (isset($config['path_style'])) {
+            $this->pathStyle = $config['path_style'];
+        }
+
+        if (isset($config['region'])) {
+            $this->region = (string)$config['region'];
+        }
+
+        if (isset($config['ssl_verify'])) {
+            $this->sslVerify = $config['ssl_verify'];
+        } else if (isset($config['ssl.certificate_authority'])) {
+            $this->sslVerify = $config['ssl.certificate_authority'];
+        }
+
+        if (isset($config['max_retry_count'])) {
+            $this->maxRetryCount = (int)$config['max_retry_count'];
+        }
+
+        if (isset($config['timeout'])) {
+            $this->timeout = (int)$config['timeout'];
+        }
+
+        if (isset($config['socket_timeout'])) {
+            $this->socketTimeout = (int)$config['socket_timeout'];
+        }
+
+        if (isset($config['connect_timeout'])) {
+            $this->connectTimeout = (int)$config['connect_timeout'];
+        }
+
+        if (isset($config['chunk_size'])) {
+            $this->chunkSize = (int)$config['chunk_size'];
+        }
+
+        if (isset($config['exception_response_mode'])) {
+            $this->exceptionResponseMode = $config['exception_response_mode'];
+        }
+
+        if (isset($config['is_cname'])) {
+            $this->isCname = $config['is_cname'];
+        }
+
+        $host = parse_url($this->endpoint)['host'];
+        if (filter_var($host, FILTER_VALIDATE_IP) !== false) {
+            $this->pathStyle = true;
+        }
+
+        $handler = self::choose_handler($this);
+
+        $this->httpClient = new Client(
+            [
+                'timeout' => 0,
+                'read_timeout' => $this->socketTimeout,
+                'connect_timeout' => $this->connectTimeout,
+                'allow_redirects' => false,
+                'verify' => $this->sslVerify,
+                'expect' => false,
+                'handler' => HandlerStack::create($handler),
+                'curl' => [
+                    CURLOPT_BUFFERSIZE => $this->chunkSize
+                ]
+            ]
+        );
+
+    }
+
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    public function refresh($key, $secret, $security_token = false): void
+    {
+        $this->ak = (string)$key;
+        $this->sk = (string)$secret;
+        if ($security_token) {
+            $this->securityToken = (string)$security_token;
+        }
+    }
+
+    /**
+     * Get the default User-Agent string to use with Guzzle
+     *
+     * @return string
+     */
+    private static function default_user_agent(): string
+    {
+        static $defaultAgent = '';
+        if (!$defaultAgent) {
+            $defaultAgent = 'obs-sdk-php/' . self::SDK_VERSION;
+        }
+
+        return $defaultAgent;
+    }
+
+    /**
+     * Factory method to create a new Obs client using an array of configuration options.
+     *
+     * @param array $config Client configuration data
+     *
+     * @return ObsClient
+     */
+    public static function factory(array $config = []): ObsClient
+    {
+        return new ObsClient($config);
+    }
+
+    public function close(): void
+    {
+        if ($this->factorys) {
+            foreach ($this->factorys as $factory) {
+                $factory->close();
+            }
+        }
+    }
+
+    public function initLog(array $logConfig = []): void
+    {
+        ObsLog::initLog($logConfig);
+
+        $msg = [];
+        $msg[] = '[OBS SDK Version=' . self::SDK_VERSION;
+        $msg[] = 'Endpoint=' . $this->endpoint;
+        $msg[] = 'Access Mode=' . ($this->pathStyle ? 'Path' : 'Virtual Hosting') . ']';
+
+        ObsLog::commonLog(WARNING, implode("];[", $msg));
+    }
+
+    private static function choose_handler($obsclient)
+    {
+        $f1 = new SdkCurlFactory(50);
+        $f2 = new SdkCurlFactory(3);
+        $obsclient->factorys[] = $f1;
+        $obsclient->factorys[] = $f2;
+        $handler = Proxy::wrapSync(
+            new CurlMultiHandler(['handle_factory' => $f1]),
+            new CurlHandler(['handle_factory' => $f2])
+        );
+
+        if (ini_get('allow_url_fopen')) {
+            $handler = $handler
+                ? Proxy::wrapStreaming($handler, new SdkStreamHandler())
+                : new SdkStreamHandler();
+        } elseif (!$handler) {
+            throw new RuntimeException('GuzzleHttp requires cURL, the '
+                . 'allow_url_fopen ini setting, or a custom HTTP handler.');
+        }
+
+        return $handler;
+    }
 }

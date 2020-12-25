@@ -3,9 +3,10 @@
   "description": "ThinkPHP 华为云相关扩展",
   "require": {
     "php": ">=7.4.0",
+    "ext-iconv": "*",
     "topthink/framework": "^6.0.0",
     "guzzlehttp/guzzle": "^6.2 || ^7.0",
-    "monolog/monolog": "^1.25.0"
+    "monolog/monolog": "^1.25.0 || ^2.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master"

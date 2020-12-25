@@ -3,6 +3,7 @@ declare (strict_types=1);
 
 namespace think\huaweicloud\extra;
 
+use Carbon\Carbon;
 use Exception;
 use Obs\ObsClient;
 use think\facade\Request;
@@ -81,5 +82,35 @@ class ObsFactory
             'SourceFile' => $file->getRealPath()
         ]);
         return $fileName;
+    }
+
+    /**
+     * 生成客户端上传 OBS 对象存储签名
+     * @param array $conditions 表单域的合法值
+     * @param int $expired 过期时间
+     * @return array
+     * @throws Exception
+     */
+    public function generatePostPresigned(array $conditions, int $expired = 600): array
+    {
+        $date = Carbon::now()->setTimezone('UTC');
+        $policy = base64_encode(json_encode([
+            'expiration' => $date->addSeconds($expired)->toISOString(),
+            'conditions' => [
+                ['bucket' => $this->option['obs']['bucket']],
+                ['starts-with', '$key', ''],
+                ...$conditions
+            ]
+        ]));
+        $signature = base64_encode(hash_hmac('sha1', $policy, $this->option['accessKeySecret'], true));
+        return [
+            'filename' => date('Ymd') . '/' . uuid()->toString(),
+            'type' => 'obs',
+            'option' => [
+                'access_key_id' => $this->option['accessKeyId'],
+                'policy' => $policy,
+                'signature' => $signature
+            ],
+        ];
     }
 }
