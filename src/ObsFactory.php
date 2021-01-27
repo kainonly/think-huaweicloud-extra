@@ -8,11 +8,6 @@ use Exception;
 use Obs\ObsClient;
 use think\facade\Request;
 
-/**
- * 对象存储处理类
- * Class ObsFactory
- * @package think\huaweicloud\extra\common
- */
 class ObsFactory
 {
     /**
@@ -54,7 +49,7 @@ class ObsFactory
     }
 
     /**
-     * 获取对象存储客户端
+     * 获取客户端
      * @return ObsClient
      */
     public function getClient(): ObsClient
@@ -63,7 +58,7 @@ class ObsFactory
     }
 
     /**
-     * 上传至对象存储
+     * 上传对象
      * @param string $name 文件名称
      * @return string
      * @throws Exception
@@ -85,7 +80,22 @@ class ObsFactory
     }
 
     /**
-     * 生成客户端上传 OBS 对象存储签名
+     * 删除对象
+     * @param array $keys 对象名
+     * @throws Exception
+     */
+    public function delete(array $keys): void
+    {
+        $client = $this->setClient();
+        $client->deleteObjects([
+            'Bucket' => $this->option['obs']['bucket'],
+            'Objects' => [...array_map(static fn($v) => ['Key' => $v], $keys)],
+            'Quiet' => true
+        ]);
+    }
+
+    /**
+     * 生成签名
      * @param array $conditions 表单域的合法值
      * @param int $expired 过期时间
      * @return array
@@ -94,17 +104,18 @@ class ObsFactory
     public function generatePostPresigned(array $conditions, int $expired = 600): array
     {
         $date = Carbon::now()->setTimezone('UTC');
+        $filename = date('Ymd') . '/' . uuid()->toString();
         $policy = base64_encode(json_encode([
             'expiration' => $date->addSeconds($expired)->toISOString(),
             'conditions' => [
                 ['bucket' => $this->option['obs']['bucket']],
-                ['starts-with', '$key', ''],
+                ['starts-with', '$key', $filename],
                 ...$conditions
             ]
         ]));
         $signature = base64_encode(hash_hmac('sha1', $policy, $this->option['accessKeySecret'], true));
         return [
-            'filename' => date('Ymd') . '/' . uuid()->toString(),
+            'filename' => $filename,
             'type' => 'obs',
             'option' => [
                 'access_key_id' => $this->option['accessKeyId'],
