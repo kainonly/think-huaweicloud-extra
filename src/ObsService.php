@@ -9,9 +9,8 @@ class ObsService extends Service
 {
     public function register(): void
     {
-        $this->app->bind('obs', function () {
-            $config = $this->app->config
-                ->get('huaweicloud');
+        $this->app->bind(ObsInterface::class, function () {
+            $config = $this->app->config->get('huaweicloud');
             return new ObsFactory($config);
         });
     }

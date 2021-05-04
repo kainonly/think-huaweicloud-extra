@@ -8,7 +8,7 @@ use Exception;
 use Obs\ObsClient;
 use think\facade\Request;
 
-class ObsFactory
+class ObsFactory implements ObsInterface
 {
     /**
      * 华为云配置
@@ -49,8 +49,8 @@ class ObsFactory
     }
 
     /**
-     * 获取客户端
      * @return ObsClient
+     * @inheritDoc
      */
     public function getClient(): ObsClient
     {
@@ -58,18 +58,15 @@ class ObsFactory
     }
 
     /**
-     * 上传对象
-     * @param string $name 文件名称
+     * @param string $name
      * @return string
      * @throws Exception
+     * @inheritDoc
      */
     public function put(string $name): string
     {
         $file = Request::file($name);
-        $fileName = date('Ymd') . '/' .
-            uuid()->toString() . '.' .
-            $file->getOriginalExtension();
-
+        $fileName = date('Ymd') . '/' . uuid()->toString() . '.' . $file->getOriginalExtension();
         $client = $this->setClient();
         $client->putObject([
             'Bucket' => $this->option['obs']['bucket'],
@@ -80,9 +77,9 @@ class ObsFactory
     }
 
     /**
-     * 删除对象
-     * @param array $keys 对象名
+     * @param array $keys
      * @throws Exception
+     * @inheritDoc
      */
     public function delete(array $keys): void
     {
@@ -95,11 +92,11 @@ class ObsFactory
     }
 
     /**
-     * 生成签名
-     * @param array $conditions 表单域的合法值
-     * @param int $expired 过期时间
+     * @param array $conditions
+     * @param int $expired
      * @return array
      * @throws Exception
+     * @inheritDoc
      */
     public function generatePostPresigned(array $conditions, int $expired = 600): array
     {
